@@ -4,8 +4,8 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-  "forwardPorts [5000],
-  "portsAttribut":es": {
+  "forwardPorts": [5000],
+  "portsAttributes": {
     "5000": {
       "label": "Flask App",
       "onAutoForward": "notify"
