@@ -1,0 +1,22 @@
+{
+  "name": "AIForTesters Codespace",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts [5000],
+  "portsAttribut":es": {
+    "5000": {
+      "label": "Flask App",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}
