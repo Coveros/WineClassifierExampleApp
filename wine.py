@@ -26,6 +26,8 @@ app = Flask(__name__)
 model = pickle.load(open('model.pkl', 'rb'))
 app.secret_key = 'your_secret_key'
 
+WINE_TYPES = {0: 'Barolo', 1: 'Grignolino', 2: 'Barbera'}
+
 # create a routine to notify test scipts that the server is up and running
 @app.route("/health")
 def health_check():
@@ -147,7 +149,7 @@ def predict():
         prediction = model.predict([[alcohol, malic_acid, ash, alcalinity_of_ash, magnesium, total_phenols, flavanoids, nonflavanoid_phenols, proanthocyanins, color_intensity, hue, od280_od315_of_diluted_wines, proline]])
         prediction = prediction[0]
 
-        return render_template('wine.html', prediction_text='The wine type is variety #{}'.format(prediction))
+        return render_template('wine.html', prediction_text='The predicted wine type is {}'.format(WINE_TYPES[prediction]))
 
 # change_password allows users to change their password if they are logged in
 @app.route("/change_password", methods=['POST'])

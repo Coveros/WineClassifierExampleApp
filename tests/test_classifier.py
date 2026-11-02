@@ -1,4 +1,40 @@
 from seleniumbase import BaseCase
+from unittest.mock import patch
+
+import pytest
+
+from wine import app, model
+
+
+@pytest.fixture
+def client(monkeypatch):
+    monkeypatch.setitem(app.config, 'TESTING', True)
+    with app.test_client() as test_client:
+        yield test_client
+
+
+class TestPredictionAPI:
+    @pytest.mark.parametrize('class_id,wine_name', [
+        (0, 'Barolo'),
+        (1, 'Grignolino'),
+        (2, 'Barbera'),
+    ])
+    def test_predict_returns_wine_name(self, client, class_id, wine_name):
+        features = {
+            'alcohol': '14', 'malic_acid': '1', 'ash': '10',
+            'alcalinity_of_ash': '15', 'magnesium': '125',
+            'total_phenols': '2', 'flavanoids': '2',
+            'nonflavanoid_phenols': '0.5', 'proanthocyanins': '1',
+            'color_intensity': '7', 'hue': '0.7',
+            'od280_od315_of_diluted_wines': '2', 'proline': '1000',
+        }
+        with patch.object(model, 'predict', return_value=[class_id]) as predict:
+            response = client.post('/predict', data=features)
+
+        assert response.status_code == 200
+        assert f'The predicted wine type is {wine_name}' in response.get_data(as_text=True)
+        assert b'variety #' not in response.data
+        predict.assert_called_once_with([list(features.values())])
 
 class ClassifierTests(BaseCase):
     def login(self):
@@ -40,6 +76,6 @@ class ClassifierTests(BaseCase):
         self.click("button[type=submit]")
 
         # assert prediction
-        self.assert_text("The wine type is variety #0")
+        self.assert_text("The predicted wine type is Barolo")
 
         self.logout()

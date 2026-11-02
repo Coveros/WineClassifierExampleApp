@@ -2,6 +2,16 @@
 
 This repository includes a Flask web app, a pre-trained wine classifier, and test automation with SeleniumBase.
 
+## Wine Classes
+
+Predictions identify wine types from Piedmont, Italy, not three different regions:
+
+- `0`: Barolo
+- `1`: Grignolino
+- `2`: Barbera
+
+This mapping was verified by matching all 178 samples across all 13 measurements between [scikit-learn's wine dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#wine-recognition-dataset) and the [named ContaminatedMixt dataset](https://cran.r-universe.dev/ContaminatedMixt/data/wine/json). See the [CRAN dataset documentation](https://search.r-project.org/CRAN/refmans/ContaminatedMixt/html/wine.html) for provenance.
+
 ## Dependencies
 
 `requirements.txt` is shared by local development, Codespaces, and other VMs. It includes Flask and scikit-learn for the app, and pytest and SeleniumBase for tests. NumPy is installed transitively by scikit-learn. No notebook or kernel packages are required.
