@@ -2,3 +2,5 @@ flask
 scikit-learn
 pytest
 seleniumbase
+flake8 
+mypy
